@@ -2,7 +2,7 @@ package mosche.sbtversioninfo
 
 import com.typesafe.sbt.GitVersioning
 import mosche.sbtversioninfo.VersionInfoKeys._
-import mosche.sbtversioninfo.internal.{DependencyChecks, VersionFile}
+import mosche.sbtversioninfo.internal.{DependencyChecks, GitExtensions, VersionFile}
 import net.virtualvoid.sbt.graph.DependencyGraphPlugin
 import sbt.Keys._
 import sbt._
@@ -16,7 +16,7 @@ object VersionInfoPlugin  extends AutoPlugin {
     versionDependencyPattern := Some("(commons)-\\w+_.*".r),
     versionClientNamePattern := Some("^(\\w+)-(?:client)_.*".r),
     versionClientLibraries := None
-  ) ++ VersionFile.settings ++ DependencyChecks.settings
+  ) ++ GitExtensions.settings ++ VersionFile.settings ++ DependencyChecks.settings
 
   override def requires: Plugins = GitVersioning && DependencyGraphPlugin
 

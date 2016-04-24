@@ -1,3 +1,4 @@
+import com.typesafe.sbt.SbtScalariform
 
 name := "sbt-versioninfo"
 
