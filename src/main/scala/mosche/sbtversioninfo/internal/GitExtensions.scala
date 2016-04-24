@@ -6,7 +6,7 @@ import com.typesafe.sbt.SbtGit.GitKeys._
 import com.typesafe.sbt.SbtGit.git.defaultFormatDateVersion
 import com.typesafe.sbt.git.JGit
 import mosche.sbtversioninfo.internal.GitExtensions.Keys._
-import sbt.{Def, TaskKey}
+import sbt.{ Def, TaskKey }
 
 import scala.collection.JavaConversions._
 
@@ -19,8 +19,8 @@ object GitExtensions {
   }
 
   def settings = Seq(
-    gitLastCommits <<= Def.task{
-      gitReader.value.withGit{
+    gitLastCommits <<= Def.task {
+      gitReader.value.withGit {
         case git: JGit =>
           git.porcelain.log()
             .setMaxCount(5)

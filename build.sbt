@@ -13,3 +13,5 @@ addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.8.0")
 sbtPlugin := true
 
 scalacOptions := Seq("-unchecked", "-deprecation", "-feature", "-language:implicitConversions")
+
+SbtScalariform.scalariformSettings

@@ -2,10 +2,10 @@ package mosche.sbtversioninfo.internal
 
 import mosche.sbtversioninfo.VersionInfoKeys._
 import net.virtualvoid.sbt.graph.DependencyGraphPlugin.autoImport._
-import net.virtualvoid.sbt.graph.{ModuleGraph, ModuleId}
+import net.virtualvoid.sbt.graph.{ ModuleGraph, ModuleId }
 import sbt.Keys._
 import sbt.impl.GroupArtifactID
-import sbt.{CrossVersion, Def, _}
+import sbt.{ CrossVersion, Def, _ }
 
 object DependencyChecks {
   import Keys._
@@ -30,7 +30,7 @@ object DependencyChecks {
         implicit val graph = (moduleGraph in Compile).value
 
         // match all organization modules against the pattern setting
-        val deps = organizationDependencies.value.map(m => m.name -> m).collect{
+        val deps = organizationDependencies.value.map(m => m.name -> m).collect {
           case (Pattern(aggregationName), m) if name != null && !m.isEvicted => aggregationName -> m
         }
 
@@ -44,9 +44,9 @@ object DependencyChecks {
         implicit val is = ivyScala.value
 
         /**
-          * Optional client library filter.
-          * Clients are expected to depend on at least one of the configured artifacts.
-          */
+         * Optional client library filter.
+         * Clients are expected to depend on at least one of the configured artifacts.
+         */
         def usesClientLibrary(m: ModuleId) = versionClientLibraries.value.map(_.exists(lib => m.dependsOn(lib)))
 
         // collect all modules matching the client name pattern and check the clientLibrary filter
@@ -60,24 +60,24 @@ object DependencyChecks {
   implicit private[this] class ToModuleIdSyntax(val moduleId: ModuleId) extends AnyVal {
 
     /**
-      * Returns true if the module got evicted during transitive dependency resolution.
-      */
+     * Returns true if the module got evicted during transitive dependency resolution.
+     */
     def isEvicted(implicit graph: ModuleGraph): Boolean = {
       graph.module(moduleId).isEvicted
     }
 
     /**
-      * Returns true if the module matches organization and name (ignoring any specific version).
-      */
+     * Returns true if the module matches organization and name (ignoring any specific version).
+     */
     def matches(artifactId: GroupArtifactID)(implicit is: Option[IvyScala]): Boolean = {
       val rev = artifactId % "0"
       moduleId.organisation == rev.organization && moduleId.name == CrossVersion(rev, is).fold(rev.name)(_(rev.name))
     }
 
     /**
-      * Returns true if the module has a direct dependency on a artifact (ignoring any specific version).
-      * This does not consider transitive dependencies.
-      */
+     * Returns true if the module has a direct dependency on a artifact (ignoring any specific version).
+     * This does not consider transitive dependencies.
+     */
     def dependsOn(artifact: GroupArtifactID)(implicit graph: ModuleGraph, is: Option[IvyScala]): Boolean = graph.edges.exists {
       case (from, to) => from == moduleId && to.matches(artifact)
     }

@@ -1,6 +1,6 @@
 package mosche.sbtversioninfo.internal
 
-import com.typesafe.sbt.SbtGit.GitKeys.{formattedDateVersion, gitHeadCommit}
+import com.typesafe.sbt.SbtGit.GitKeys.{ formattedDateVersion, gitHeadCommit }
 import mosche.sbtversioninfo.VersionInfoKeys._
 import mosche.sbtversioninfo.internal.GitExtensions.Commit
 import sbt.Keys._
@@ -16,11 +16,11 @@ object VersionFile {
     resourceGenerators in Compile <+= Def.task {
 
       val dependencies = trackedOrganizationDependencies.value.fold(Map.empty[String, JSONType])(deps =>
-        Map("dependencies" -> JSONObject(deps.map{ case (name, modules) => name -> JSONArray(modules.map(_.version).distinct.toList)}))
+        Map("dependencies" -> JSONObject(deps.map { case (name, modules) => name -> JSONArray(modules.map(_.version).distinct.toList) }))
       )
 
       val remoteDependencies = organizationClients.value.fold(Map.empty[String, JSONType])(deps =>
-        Map("remoteDependencies" -> JSONObject(deps.map{ case (name, module) => name -> module.version}))
+        Map("remoteDependencies" -> JSONObject(deps.map { case (name, module) => name -> module.version }))
       )
 
       val git = gitHeadCommit.value.fold(Map.empty[String, JSONType]) { gitHead =>
